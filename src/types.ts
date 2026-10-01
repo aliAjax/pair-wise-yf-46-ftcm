@@ -36,3 +36,28 @@ export interface HistoryEntry {
   time: string;
   snapshot: RundownItem[];
 }
+
+export type SyncStatus = "idle" | "syncing" | "conflict" | "failed" | "synced";
+
+/** 字段级冲突：同一字段两边改成不同值，留下两版待确认 */
+export interface FieldConflict {
+  id: string;
+  itemId: string;
+  itemTitle: string;
+  /** RundownItem 字段名；"__delete__" 表示条目存废冲突 */
+  field: string;
+  fieldLabel: string;
+  baseValue: unknown;
+  localValue: unknown;
+  remoteValue: unknown;
+}
+
+/** 顺序改动后立即重算的硬时间风险 */
+export interface HardTimeRisk {
+  itemId: string;
+  title: string;
+  /** 按当前顺序推算的实际开播时间 HH:mm */
+  scheduled: string;
+  /** 条目要求的硬时间 HH:mm */
+  hardStart: string;
+}
